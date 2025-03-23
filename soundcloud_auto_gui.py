@@ -170,7 +170,7 @@ def main(lookup_filename: str, skip_to: str | None):
                 keyboard.send('page down')  # depends on your window height. I need this to get the "share" button in the view.  
                 sleep(0.5)
                 keyboard.write('f', delay=SHORT_DELAY)  # vimium
-                sleep(0.5)
+                sleep(0.7)
                 # sleep(1)    # for debug
                 # select "share" button
                 keyboard.write('af', delay=SHORT_DELAY) # modify. this code may change, depending on your window height.  
