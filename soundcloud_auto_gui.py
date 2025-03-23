@@ -23,17 +23,31 @@ import os
 import json
 import threading
 import time
+import argparse
 
 import keyboard
-
-SKIP_TO: str | None = None  # anonymized filename
 
 SHORT_DELAY = 0.1
 WEBPAGE_LOAD_DELAY = 1
 
-def Samples():
+def parseArgs():
+    parser = argparse.ArgumentParser(description='Automate copying embed html code from soundcloud.')
+    parser.add_argument(
+        '--lookup', help='The lookup json file previously generated.', 
+        type=str, required=True,
+    )
+    parser.add_argument(
+        '--skip_to', help='Skip to a certain filename.', 
+        type=str, 
+    )
+    args = parser.parse_args()
+    lookup: str = args.lookup
+    skip_to: str | None = args.skip_to
+    return lookup, skip_to
+
+def Samples(lookup_filename: str):
     # modify this function to your need.
-    with open('anonymization_lookup.json', 'r') as f:
+    with open(lookup_filename, 'r') as f:
         lookup = json.load(f)
     
     for filename, task, song, model in lookup:
@@ -43,9 +57,9 @@ def Samples():
         model: str
         yield filename, task, song, model
 
-def Pages():
+def Pages(lookup_filename: str):
     # modify this function to your need.
-    samples = Samples()
+    samples = Samples(lookup_filename)
     current_page = None
     acc = []
     while True:
@@ -65,16 +79,16 @@ def Pages():
                 acc = [(filename, task, song, model)]
                 current_page = (task, song)
 
-def unitTestPages():
-    a = [*Samples()]
+def unitTestPages(lookup_filename: str):
+    a = [*Samples(lookup_filename)]
     b = []
-    for page in Pages():
+    for page in Pages(lookup_filename):
         b.extend(page)
     assert a == b
 
-def SortedPages():
+def SortedPages(lookup_filename: str):
     # place the prompt at the top.
-    for page in Pages():
+    for page in Pages(lookup_filename):
         sorted_page: tp.List[tp.Tuple[str, str, str, str]] = []
         for filename, task, song, model in page:
             if model == 'prompt':
@@ -83,13 +97,13 @@ def SortedPages():
                 sorted_page.append((filename, task, song, model))
         yield sorted_page
 
-def inspectSortedPages():
-    for page in SortedPages():
+def inspectSortedPages(lookup_filename: str):
+    for page in SortedPages(lookup_filename):
         for filename, task, song, model in page:
             print(filename, task, song, model)
         input()
 
-def main():
+def main(lookup_filename: str, skip_to: str | None):
     print(__doc__)
 
     do_abort = False
@@ -115,16 +129,16 @@ def main():
         if do_abort:
             raise EOFError('aborted')
     
-    skip_done = SKIP_TO is None
+    skip_done = skip_to is None
     keyboard.add_hotkey('`', onHotKey)
     try:
         print('Awaiting input...')
-        for page in SortedPages():
+        for page in SortedPages(lookup_filename):
             print('new page:', page[0][1], page[0][2])
             for filename, _, _, _ in page:
                 if not skip_done:
-                    assert SKIP_TO is not None
-                    if SKIP_TO in filename:
+                    assert skip_to is not None
+                    if skip_to in filename:
                         skip_done = True
                     else:
                         print('skipping:', filename)
@@ -178,6 +192,7 @@ def main():
     print('ok')
 
 if __name__ == '__main__':
-    unitTestPages()
-    # inspectSortedPages()
-    main()
+    lookup_filename, skip_to = parseArgs()
+    unitTestPages(lookup_filename)
+    # inspectSortedPages(lookup_filename)
+    main(lookup_filename, skip_to)
