@@ -61,7 +61,7 @@ def main():
         print('This is a dangerous operation!!!')
         askConfirm()
     with open(salt_filename, 'r') as f:
-        salt = f.read()
+        salt = f.read().strip()
     lookup = []
     used_ano_names = set()
     # modify
