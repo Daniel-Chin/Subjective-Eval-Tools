@@ -14,6 +14,7 @@ To abort during automation: Press `
 
 Additional notes:  
 - This setup is necessary because SoundCloud's embed html of a private song contains a secret token.  
+- Recommended workflow: edit the questions in the survey one by one. For each edit, evoke this tool once to copy the next song's embed code.  
 '''
 
 import typing as tp
