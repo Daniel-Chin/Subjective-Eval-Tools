@@ -15,6 +15,7 @@ To abort during automation: Press `
 Additional notes:  
 - This setup is necessary because SoundCloud's embed html of a private song contains a secret token.  
 - Recommended workflow: edit the questions in the survey one by one. For each edit, evoke this tool once to copy the next song's embed code.  
+- You likely need to modify code around "# modify"  
 '''
 
 import typing as tp
@@ -158,7 +159,7 @@ def main():
                 sleep(0.5)
                 # sleep(1)    # for debug
                 # select "share" button
-                keyboard.write('af', delay=SHORT_DELAY) # this code may change.
+                keyboard.write('af', delay=SHORT_DELAY) # modify. this code may change, depending on your window height.  
                 sleep(0.7)
                 keyboard.write('fc', delay=SHORT_DELAY) # vimium. select "embed"
                 sleep(0.5)
