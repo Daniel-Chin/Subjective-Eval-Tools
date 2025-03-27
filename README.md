@@ -11,10 +11,35 @@ This repo helps you with Music AI subjective evaluation surveys.
 - `uv add git+https://github.com/Daniel-Chin/Subjective-Eval-Tools/`  
 
 ## Usage
-Anonymize filenames:
+### Anonymize filenames
 ```python
 import subjective_eval_tools
+
+def MySamples():
+    for task in [...]:
+        for model in [...]:
+            yield f'./{task}/{model}.mp3'
+
+subjective_eval_tools.anonymize(
+    root_dir='.', 
+    source_filenames=MySamples(),
+    salt='banana',
+    destination_dirname='./anonymized/',
+    index_filename='./index.json',
+)
 ```
+
+### Sum audio durations
+```bash
+uv run python -m subjective_eval_tools.sum_audio_duration
+```
+
+### Batch copy from SoundCloud
+For this one you want to git clone the repo and modify soundcloud_auto_gui.py to your needs.  
+```bash
+uv run python -m subjective_eval_tools.soundcloud_auto_gui --index ./index.json
+```
+Refer to the docstring at the top of the file.  
 
 ## Acknowledgements
 Special thanks to [Jingwei Zhao](https://github.com/zhaojw1998) for his pioneering tutorials.  
