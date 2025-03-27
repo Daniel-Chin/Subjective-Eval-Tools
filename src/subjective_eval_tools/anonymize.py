@@ -78,7 +78,9 @@ def anonymize(
     used_ano_names = set()
 
     for source_filename in source_filenames:
-        abs_src = path.join(root_dir, source_filename)
+        abs_src = path.abspath(path.join(root_dir, source_filename))
+        # make source_filename canonical relative to root_dir
+        source_filename = path.relpath(abs_src, root_dir)
         _, ext = path.splitext(source_filename)
         hash_code = hashlib.sha256(f'{salt}{source_filename}'.encode()).hexdigest()
         anonymized = f's_{hash_code[:code_length]}'
