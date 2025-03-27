@@ -50,7 +50,7 @@ def askConfirm():
 
 def anonymize(
     root_dir: str,
-    source_filenames: tp.Sequence[str],
+    source_filenames: tp.Iterable[str],
     salt: str,
     destination_dirname: str,
     index_filename: str,
