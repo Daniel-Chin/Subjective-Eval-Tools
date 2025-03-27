@@ -64,9 +64,13 @@ def main():
         salt = f.read().strip()
     lookup = []
     used_ano_names = set()
+
     # modify
-    # This treats the dir structure of src folder.
-    for task in os.listdir(src):
+    # handle the dir structure of src folder.
+
+    # for task in os.listdir(src):
+    for task in '.':
+
         filenames = os.listdir(path.join(src, task))
         filenames.sort()
         for filename in filenames:
