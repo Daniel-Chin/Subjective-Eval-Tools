@@ -13,14 +13,14 @@ This repo helps you with Music AI subjective evaluation surveys.
 ## Usage
 ### Anonymize filenames
 ```python
-import subjective_eval_tools
+from subjective_eval_tools import anonymize
 
 def MySamples():
     for task in [...]:
         for model in [...]:
             yield f'./{task}/{model}.mp3'
 
-subjective_eval_tools.anonymize(
+anonymize.anonymize(
     root_dir='.', 
     source_filenames=MySamples(),
     salt='banana',
