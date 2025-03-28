@@ -45,3 +45,6 @@ Refer to the docstring at the top of the file.
 Special thanks to [Jingwei Zhao](https://github.com/zhaojw1998) for his pioneering tutorials.  
 
 I welcome feedback! Please open issues.  
+
+## todo
+- soundcloud batch copy should use Selenium instead of GUI

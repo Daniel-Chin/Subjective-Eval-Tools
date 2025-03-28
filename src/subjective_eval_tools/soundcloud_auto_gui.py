@@ -16,6 +16,7 @@ Additional notes:
 - This setup is necessary because SoundCloud's embed html of a private song contains a secret token.  
 - Recommended workflow: edit the questions in the survey one by one. For each edit, evoke this tool once to copy the next song's embed code.  
 - You likely need to modify code around "# modify"  
+- An observed issue: sometimes the "Your track isn’t eligible for recommendation yet." banner unpredictably doesn't show, affecting vimium key maps. You'd have to manually do those ones.  
 '''
 
 import typing as tp
@@ -116,13 +117,16 @@ def main(index_filename: str, skip_to: str | None):
             sleep(SHORT_DELAY)
             keyboard.send('enter')  # go to song page
             sleep(WEBPAGE_LOAD_DELAY)
-            keyboard.send('page down')  # depends on your window height. I need this to get the "share" button in the view.  
-            sleep(0.5)
-            keyboard.write('f', delay=SHORT_DELAY)  # vimium
-            sleep(0.7)
-            # sleep(1)    # for debug
-            # select "share" button
-            keyboard.write('af', delay=SHORT_DELAY) # modify. this code may change, depending on your window height.  
+            # keyboard.send('page down')  # depends on your window height. I need this to get the "share" button in the view.  
+            # sleep(0.5)
+            if 1:
+                keyboard.write('f', delay=SHORT_DELAY)  # vimium
+                sleep(0.7)
+                # sleep(1)    # for debug
+                # select "share" button
+                keyboard.write('j', delay=SHORT_DELAY) # modify. this code may change, depending on your window height.  
+            else:
+                sleep(2)    # the human should click the button now
             sleep(0.7)
             keyboard.write('fc', delay=SHORT_DELAY) # vimium. select "embed"
             sleep(0.5)
